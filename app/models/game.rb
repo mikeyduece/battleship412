@@ -4,4 +4,12 @@ class Game < ApplicationRecord
   belongs_to :winner, class_name: 'User', optional: true
   belongs_to :loser, class_name: 'User', optional: true
 
+  before_create :ensure_uuid
+
+  private
+
+  def ensure_uuid
+    self.uuid = SecureRandom.hex(6)
+  end
+
 end
