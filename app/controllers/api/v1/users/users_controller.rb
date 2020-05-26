@@ -4,7 +4,7 @@ class Api::V1::Users::UsersController < ApplicationController
   def create
     user = User.new(user_params)
 
-    return success_response(user: ::Users::UserBlueprint, view: :extended) if user.save!
+    return success_response(user: serialized_resource(user, ::Users::UserBlueprint, view: :extended)) if user.save!
     error = handle_error(user)
 
     error_response(error, 404)

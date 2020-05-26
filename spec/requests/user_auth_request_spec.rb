@@ -28,4 +28,5 @@ describe 'User Authentication' do
     expect(User.last.first_name).to eq('Test')
     expect(User.count).to eq(1)
   end
+
 end
