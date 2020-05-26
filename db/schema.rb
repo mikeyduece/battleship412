@@ -10,16 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_26_165835) do
+ActiveRecord::Schema.define(version: 2020_05_26_165823) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "games", force: :cascade do |t|
     t.string "uuid", default: "", null: false
+    t.bigint "player_1_id"
+    t.bigint "player_2_id"
+    t.bigint "winner_id"
+    t.bigint "loser_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["loser_id"], name: "index_games_on_loser_id"
+    t.index ["player_1_id"], name: "index_games_on_player_1_id"
+    t.index ["player_2_id"], name: "index_games_on_player_2_id"
     t.index ["uuid"], name: "index_games_on_uuid"
+    t.index ["winner_id"], name: "index_games_on_winner_id"
   end
 
   create_table "oauth_access_grants", force: :cascade do |t|
@@ -74,9 +82,7 @@ ActiveRecord::Schema.define(version: 2020_05_26_165835) do
     t.datetime "remember_created_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "game_id"
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["game_id"], name: "index_users_on_game_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
@@ -84,5 +90,4 @@ ActiveRecord::Schema.define(version: 2020_05_26_165835) do
   add_foreign_key "oauth_access_grants", "users", column: "resource_owner_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "users", column: "resource_owner_id"
-  add_foreign_key "users", "games"
 end

@@ -1,9 +1,7 @@
 class Game < ApplicationRecord
-  has_many :players, class_name: 'User', before_add: :validate_number_of_players
+  belongs_to :player_1, class_name: 'User'
+  belongs_to :player_2, class_name: 'User'
+  belongs_to :winner, class_name: 'User', optional: true
+  belongs_to :loser, class_name: 'User', optional: true
 
-  private
-
-  def validate_number_of_players(_user)
-    raise StandardError.new('Only 2 players per game') if players.size >= Api::Games::NUMBER_OF_PLAYERS_PER_GAME
-  end
 end
