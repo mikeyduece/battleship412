@@ -1,12 +1,16 @@
 module SerializationHelper
-  def success_response(status = 200, data = {}, message = nil)
-    default_response = default_response(status, message, data)
-    render json: default_response
+  def serialized_resource(resource, blueprint, options)
+    JSON.parse(blueprint.render(resource, options), symbolize_names: true)
+  end
+
+  def success_response(data = {}, message = nil, status = 200)
+    response = default_response(status, message, data)
+    render json: response
   end
 
   def error_response(message, status = 404)
-    default_response = default_response(status, message)
-    render json: default_response
+    response = default_response(status, message)
+    render json: response
   end
 
   def default_response(status, message, data = nil)
