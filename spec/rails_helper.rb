@@ -84,17 +84,12 @@ RSpec.configure do |config|
     JSON.parse(body, symbolize_names: true)
   end
 
-  def setup
-    ('A'..'J').to_a.each do |letter|
-      Column.find_or_create_by(name: letter)
-    end
+  def setup_grid
+    ('A'..'J').to_a.each { |letter| Column.find_or_create_by(name: letter) }
 
-    (1..10).to_a.each do |number|
-      Row.find_or_create_by(name: number)
-    end
+    (1..10).to_a.each { |number| Row.find_or_create_by(name: number) }
 
-    Ship.ship_types.keys.each do |ship_type|
-      Ship.find_or_create_by(ship_type: ship_type)
-    end
+    Ship.ship_types.keys.each { |ship_type| Ship.find_or_create_by(ship_type: ship_type) }
   end
+
 end

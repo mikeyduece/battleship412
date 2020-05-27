@@ -28,6 +28,7 @@ gem 'cancancan', '~> 2.0'
 gem 'devise'
 gem 'doorkeeper'
 gem 'blueprinter'
+gem 'hashie'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
