@@ -10,7 +10,21 @@ class Board < ApplicationRecord
 
   enum board_type: %i[ships shots]
 
+  def add_ship_placement!(column, row)
+    board_column = find_board_column(column, row)
+    board_column.occupied!
+  end
+
+  def remove_ship_placement!(column, row)
+    board_column = find_board_column(column, row)
+    board_column.unoccupied!
+  end
+
   private
+
+  def find_board_column(column, row)
+    board_columns.find_by(column: column, row: row)
+  end
 
   def ensure_grid
     Column.find_each do |c|

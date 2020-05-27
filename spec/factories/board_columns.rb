@@ -1,6 +1,8 @@
 FactoryBot.define do
   factory :board_column do
-    board { nil }
-    column { nil }
+    association :board, factory: :board
+    association :column, factory: :column
+    association :row, factory: :row
+    status { 0 }
   end
 end
