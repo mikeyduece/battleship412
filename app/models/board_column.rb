@@ -5,4 +5,6 @@ class BoardColumn < ApplicationRecord
 
   enum status: %i[unoccupied occupied hit miss]
 
+  validates :board_id, uniqueness: { scope: %i[column_id row_id] }
+
 end
