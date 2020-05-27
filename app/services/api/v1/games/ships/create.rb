@@ -8,7 +8,7 @@ module Api
             yield(Success.new(game), NoTrigger)
 
           rescue StandardError => e
-            yield(NoTrigger, Failure.new(e.message), 500)
+            yield(NoTrigger, Failure.new(500, e.message))
           end
 
           private
