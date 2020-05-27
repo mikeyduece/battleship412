@@ -51,13 +51,13 @@ describe 'Game Play API' do
       game_data = parse_json(response.body)
       game_data.extend(Hashie::Extensions::DeepLocate)
       ships = game_data.deep_locate -> (key, value, _obj) { key.eql?(:ship) && !value.nil? }
-      boards = game_data[:game][:boards].select {|b| b[:board_type].eql?('ships')}.select {|c| c[:player][:id].eql?(user_1.id)}
-      player_1_json_board = boards.find {|b| b[:player][:id].eql?(1)}
+      boards = game_data[:game][:boards].select { |b| b[:board_type].eql?('ships') }.select { |c| c[:player][:id].eql?(user_1.id) }
+      player_1_json_board = boards.find { |b| b[:player][:id].eql?(1) }
       player_1_board = game.boards.ships.find_by(player: user_1)
-      
+
       expect(player_1_json_board[:player][:id]).to eq(user_1.id)
-      expect(ships.all? {|s| s[:status].eql?('occupied')}).to be_truthy
-      expect( player_1_board.board_columns.occupied.pluck(:id)).to eq( player_1_json_board[:cells].select {|c| c[:ship]}.map {|x| x[:id]})
+      expect(ships.all? { |s| s[:status].eql?('occupied') }).to be_truthy
+      expect(player_1_board.board_columns.occupied.pluck(:id)).to eq(player_1_json_board[:cells].select { |c| c[:ship] }.map { |x| x[:id] })
     end
 
     it 'should logs hits' do
@@ -74,8 +74,15 @@ describe 'Game Play API' do
       }
       allow_any_instance_of(ApplicationController).to receive(:doorkeeper_token).and_return(token_1)
       post v1_user_game_ship_placement_url(user_id: user_1.id, game_id: game.id), params: ship_params
-      allow_any_instance_of(ApplicationController).to receive(:doorkeeper_token).and_return(token_1)
-      post v1_user_game_ship_placement_url(user_id: user_1.id, game_id: game.id), params: ship_params
+      allow_any_instance_of(ApplicationController).to receive(:doorkeeper_token).and_return(token_2)
+      post v1_user_game_ship_placement_url(user_id: user_2.id, game_id: game.id), params: ship_params
+
+      patch v1_user_game_firing_solution_url(user_2, game), params: { shot: { coord: 'A1' } }
+
+      expect(response).to be_successful
+
+      game_data = parse_json(response.body)
+      require 'pry'; binding.pry
     end
 
   end
