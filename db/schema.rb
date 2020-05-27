@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_26_223434) do
+ActiveRecord::Schema.define(version: 2020_05_27_160452) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,11 +22,23 @@ ActiveRecord::Schema.define(version: 2020_05_26_223434) do
     t.integer "status", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "board_ship_id"
     t.index ["board_id", "column_id", "row_id"], name: "index_board_columns_on_board_id_and_column_id_and_row_id", unique: true
     t.index ["board_id"], name: "index_board_columns_on_board_id"
+    t.index ["board_ship_id"], name: "index_board_columns_on_board_ship_id"
     t.index ["column_id"], name: "index_board_columns_on_column_id"
     t.index ["row_id"], name: "index_board_columns_on_row_id"
     t.index ["status"], name: "index_board_columns_on_status"
+  end
+
+  create_table "board_ships", force: :cascade do |t|
+    t.bigint "board_id", null: false
+    t.bigint "ship_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["board_id", "ship_id"], name: "index_board_ships_on_board_id_and_ship_id", unique: true
+    t.index ["board_id"], name: "index_board_ships_on_board_id"
+    t.index ["ship_id"], name: "index_board_ships_on_ship_id"
   end
 
   create_table "boards", force: :cascade do |t|
@@ -115,6 +127,13 @@ ActiveRecord::Schema.define(version: 2020_05_26_223434) do
     t.index ["name"], name: "index_rows_on_name"
   end
 
+  create_table "ships", force: :cascade do |t|
+    t.integer "ship_type", default: 0
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["ship_type"], name: "index_ships_on_ship_type"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "first_name", default: "", null: false
     t.string "last_name", default: "", null: false
@@ -132,6 +151,8 @@ ActiveRecord::Schema.define(version: 2020_05_26_223434) do
   add_foreign_key "board_columns", "boards"
   add_foreign_key "board_columns", "columns"
   add_foreign_key "board_columns", "rows"
+  add_foreign_key "board_ships", "boards"
+  add_foreign_key "board_ships", "ships"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_grants", "users", column: "resource_owner_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
