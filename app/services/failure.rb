@@ -7,6 +7,6 @@ class Failure
   end
 
   def call(&block)
-    yield(code, message)
+    yield(message, code)
   end
 end

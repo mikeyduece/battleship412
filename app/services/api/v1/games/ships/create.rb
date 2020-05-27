@@ -9,6 +9,8 @@ module Api
             place_ships
             yield(Success.new(game), NoTrigger)
 
+          rescue ::Games::Boards::Ships::InvalidPlacement => e
+            yield(NoTrigger, Failure.new(e.code, e.message))
           rescue StandardError => e
             yield(NoTrigger, Failure.new(500, e.message))
           end
@@ -16,7 +18,7 @@ module Api
           private
 
           def place_ships
-            ships.each do |ship, coords|
+            params.each do |ship, coords|
               ship_board.place_ships!(ship, coords)
             end
           end
