@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Board, type: :model do
   subject { create(:board) }
+  let(:ship) { create(:ship) }
 
   context :associations do
     it { should belong_to(:game).inverse_of(:boards) }
@@ -16,7 +17,7 @@ RSpec.describe Board, type: :model do
       column = create(:column)
       row = create(:row)
 
-      placement = subject.add_ship_placement!(column, row)
+      placement = subject.add_ship_placement!(column, row, ship)
       point = subject.board_columns.find_by(column: column, row: row)
 
       expect(placement).to be_truthy
@@ -26,7 +27,7 @@ RSpec.describe Board, type: :model do
 
     it 'should place more than one ship' do
       points = create_list(:board_column, 3, board: subject)
-      points.each { |point| subject.add_ship_placement!(point.column, point.row) }
+      points.each { |point| subject.add_ship_placement!(point.column, point.row, ship) }
 
       expect(subject.board_columns.occupied.count).to eq(3)
     end
@@ -36,7 +37,7 @@ RSpec.describe Board, type: :model do
       column = subject.board_columns.first.column
       row = subject.board_columns.first.row
 
-      subject.add_ship_placement!(column, row)
+      subject.add_ship_placement!(column, row, ship)
       expect(subject.board_columns.occupied.count).to eq(1)
       expect(subject.board_columns.unoccupied.count).to eq(9)
 
