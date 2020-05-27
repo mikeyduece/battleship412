@@ -8,4 +8,8 @@ class BoardColumn < ApplicationRecord
 
   enum status: %i[unoccupied occupied hit miss]
 
+  scope :plot_point, ->(column, row) {
+    joins(:column, :row).find_by(columns: { name: column }, rows: { name: row })
+  }
+
 end
