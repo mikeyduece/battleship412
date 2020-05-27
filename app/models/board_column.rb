@@ -12,4 +12,10 @@ class BoardColumn < ApplicationRecord
     joins(:column, :row).find_by(columns: { name: column }, rows: { name: row })
   }
 
+  scope :sunk?, ->(ship_id) {
+    ship = Ship.find(ship_id)
+    hits = joins(:board_ship).where(board_ships: { ship_id: ship.id }).hit
+
+    return ship.length.eql?(hits.length)
+  }
 end

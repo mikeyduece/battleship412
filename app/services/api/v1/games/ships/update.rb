@@ -17,13 +17,23 @@ module Api
           private
 
           def log_shot!
-            point = shoot!
-            point.occupied? ? point.hit! : point.miss!
+            opponent_cell, own_cell = shoot!
+
+            if opponent_cell.occupied?
+              opponent_cell.hit!
+              own_cell.hit!
+            else
+              opponent_cell.miss!
+              own_cell.miss!
+            end
           end
 
           def shoot!
             column, row = shot_coords
-            opponent_ship_board.board_columns.plot_point(column, row)
+            opponent = opponent_ship_board.board_columns.plot_point(column, row)
+            own = shot_board.board_columns.plot_point(column, row)
+
+            return opponent, own
           end
 
           def shot_coords

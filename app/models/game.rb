@@ -12,22 +12,6 @@ class Game < ApplicationRecord
   enum progress: %i[waiting in_progress done]
   enum turn: %i[player_1 player_2]
 
-  def player_1_ship_board
-    player_boards(player_1, :ships)
-  end
-
-  def player_2_ship_board
-    player_boards(player_2, :ships)
-  end
-
-  def player_1_shot_board
-    player_boards(player_1, :shots)
-  end
-
-  def player_2_shot_board
-    player_boards(player_2, :shots)
-  end
-
   private
 
   def ensure_boards
@@ -39,10 +23,6 @@ class Game < ApplicationRecord
 
   def board_types(board_type)
     Board.board_types[board_type]
-  end
-
-  def player_boards(player, board_type)
-    boards.find_by(player: player, board_type: board_type)
   end
 
   def ensure_uuid

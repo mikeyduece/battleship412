@@ -13,6 +13,13 @@ class Board < ApplicationRecord
 
   enum board_type: %i[ships shots]
 
+  scope :sunken_ships, -> {
+    ship_ids = joins(:board_columns, board_ships: :ship)
+                 .where(board_columns: {status: BoardColumn.statuses[:hit]})
+                 .pluck('board_ships.ship_id')
+    ships = Ship.where(id: ship_ids)
+  }
+
   private
 
   def ensure_grid

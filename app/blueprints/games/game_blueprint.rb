@@ -3,6 +3,5 @@ class Games::GameBlueprint < BaseBlueprint
 
   association :player_1, blueprint: ::Users::UserBlueprint, view: :normal
   association :player_2, blueprint: ::Users::UserBlueprint, view: :normal
-
   association :boards, blueprint: Games::Boards::BoardBlueprint
 end
