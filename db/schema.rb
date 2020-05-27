@@ -10,10 +10,42 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_26_165823) do
+ActiveRecord::Schema.define(version: 2020_05_26_223434) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "board_columns", force: :cascade do |t|
+    t.bigint "board_id", null: false
+    t.bigint "column_id", null: false
+    t.bigint "row_id", null: false
+    t.integer "status", default: 0
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["board_id", "column_id", "row_id"], name: "index_board_columns_on_board_id_and_column_id_and_row_id", unique: true
+    t.index ["board_id"], name: "index_board_columns_on_board_id"
+    t.index ["column_id"], name: "index_board_columns_on_column_id"
+    t.index ["row_id"], name: "index_board_columns_on_row_id"
+    t.index ["status"], name: "index_board_columns_on_status"
+  end
+
+  create_table "boards", force: :cascade do |t|
+    t.integer "board_type", default: 0
+    t.bigint "game_id", null: false
+    t.bigint "player_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["board_type"], name: "index_boards_on_board_type"
+    t.index ["game_id"], name: "index_boards_on_game_id"
+    t.index ["player_id"], name: "index_boards_on_player_id"
+  end
+
+  create_table "columns", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_columns_on_name"
+  end
 
   create_table "games", force: :cascade do |t|
     t.string "uuid", default: "", null: false
@@ -21,11 +53,15 @@ ActiveRecord::Schema.define(version: 2020_05_26_165823) do
     t.bigint "player_2_id"
     t.bigint "winner_id"
     t.bigint "loser_id"
+    t.integer "progress", default: 0
+    t.integer "turn", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["loser_id"], name: "index_games_on_loser_id"
     t.index ["player_1_id"], name: "index_games_on_player_1_id"
     t.index ["player_2_id"], name: "index_games_on_player_2_id"
+    t.index ["progress"], name: "index_games_on_progress"
+    t.index ["turn"], name: "index_games_on_turn"
     t.index ["uuid"], name: "index_games_on_uuid"
     t.index ["winner_id"], name: "index_games_on_winner_id"
   end
@@ -72,6 +108,13 @@ ActiveRecord::Schema.define(version: 2020_05_26_165823) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
+  create_table "rows", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_rows_on_name"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "first_name", default: "", null: false
     t.string "last_name", default: "", null: false
@@ -86,6 +129,9 @@ ActiveRecord::Schema.define(version: 2020_05_26_165823) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "board_columns", "boards"
+  add_foreign_key "board_columns", "columns"
+  add_foreign_key "board_columns", "rows"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_grants", "users", column: "resource_owner_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
