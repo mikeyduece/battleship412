@@ -1,4 +1,4 @@
-class Api::V1::Games::GamesController < BaseGameController
+class Api::V1::Games::GamesController < Api::V1::Games::BaseGameController
   skip_before_action :ensure_game
 
   def create
