@@ -1,4 +1,5 @@
-class Api::V1::Games::GamesController < ApplicationController
+class Api::V1::Games::GamesController < BaseGameController
+  skip_before_action :ensure_game
 
   def create
     game = Game.new(game_params)
