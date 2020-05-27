@@ -6,6 +6,8 @@ class CreateGames < ActiveRecord::Migration[6.0]
       t.references :player_2
       t.references :winner
       t.references :loser
+      t.integer :progress, default: 0, index: true
+      t.integer :turn, default: 0, index: true
 
       t.timestamps
     end
