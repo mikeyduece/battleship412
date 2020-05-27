@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
         resources :users, module: :users, only: %i[create delete show] do
           resources :games, module: :games, only: [] do
+            resource :firing_solution, module: :ships, only: :create
             resource :ship_placement, module: :ships, only: %i[create update destroy]
           end
         end

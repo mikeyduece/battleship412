@@ -2,6 +2,8 @@ module Boards::Ships
 
   def add_ship_placement!(column, row, ship)
     board_column = find_board_column(column, row)
+    raise Games::Boards::Ships::InvalidPlacement if board_column.occupied?
+
     place_ship!(ship, board_column)
     board_column.occupied!
   end
