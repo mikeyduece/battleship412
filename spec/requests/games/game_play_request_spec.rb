@@ -23,9 +23,9 @@ describe 'Game Play API' do
           carrier: %w[E1 E2 E3 E4 E5]
         }
       }
-      post v1_game_ship_placement_url(game_id: game.id), params: ship_params
+      post v1_user_game_ship_placement_url(user_id: user_1.id, game_id: game.id), params: ship_params
 
-
+      
     end
   end
 end

@@ -5,6 +5,8 @@ module Api
         class Create < BaseGameService
 
           def call(&block)
+            game.in_progress!
+            place_ships
             yield(Success.new(game), NoTrigger)
 
           rescue StandardError => e

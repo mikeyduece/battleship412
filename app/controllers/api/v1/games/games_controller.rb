@@ -1,8 +1,7 @@
 module Api
   module V1
     module Games
-      class GamesController < BaseGameController
-        skip_before_action :ensure_game
+      class GamesController < ApplicationController
 
         def create
           game = Game.new(game_params)
