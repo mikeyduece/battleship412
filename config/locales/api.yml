@@ -1,0 +1,7 @@
+en:
+  api:
+    games:
+      boards:
+        ships:
+          errors:
+            invalid_placement: 'You have placed one of your ships incorrectly. Please limit selections to adjacent cells withing the defined board.'
