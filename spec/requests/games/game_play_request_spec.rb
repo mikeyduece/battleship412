@@ -25,7 +25,12 @@ describe 'Game Play API' do
       }
       post v1_user_game_ship_placement_url(user_id: user_1.id, game_id: game.id), params: ship_params
 
-      
+      expect(response).to be_successful
+
+      game_data = parse_json(response.body)
+
+      expect(game_data[:status]).to eq(404)
+      expect(game_data[:message]).to eq('You have placed one of your ships incorrectly. Please limit selections to adjacent cells withing the defined board.')
     end
   end
 end

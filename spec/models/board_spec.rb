@@ -17,7 +17,7 @@ RSpec.describe Board, type: :model do
       column = create(:column)
       row = create(:row)
 
-      placement = subject.add_ship_placement!(column, row, ship)
+      placement = subject.add_ship_placement!(column, row, ship.ship_type)
       point = subject.board_columns.find_by(column: column, row: row)
 
       expect(placement).to be_truthy
@@ -27,7 +27,7 @@ RSpec.describe Board, type: :model do
 
     it 'should place more than one ship' do
       points = create_list(:board_column, 3, board: subject)
-      points.each { |point| subject.add_ship_placement!(point.column, point.row, ship) }
+      points.each { |point| subject.add_ship_placement!(point.column, point.row, ship.ship_type) }
 
       expect(subject.board_columns.occupied.count).to eq(3)
     end
@@ -37,7 +37,7 @@ RSpec.describe Board, type: :model do
       column = subject.board_columns.first.column
       row = subject.board_columns.first.row
 
-      subject.add_ship_placement!(column, row, ship)
+      subject.add_ship_placement!(column, row, ship.ship_type)
       expect(subject.board_columns.occupied.count).to eq(1)
       expect(subject.board_columns.unoccupied.count).to eq(9)
 
