@@ -12,5 +12,4 @@ RSpec.describe BoardColumn, type: :model do
     it { should validate_uniqueness_of(:board_id).scoped_to(%i[column_id row_id]) }
   end
 
-
 end
