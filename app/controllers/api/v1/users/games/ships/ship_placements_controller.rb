@@ -6,7 +6,6 @@ module Api
           class ShipPlacementsController < BaseGameController
 
             def create
-              require 'pry'; binding.pry
               Api::V1::Games::Ships::Create.call(current_api_user, @game, ship_params) do |success, failure|
                 success.call { |resource| success_response(ship: serialized_resource(resource, Games::Ships::ShipBlueprint)) }
                 failure.call(&method(:error_response))

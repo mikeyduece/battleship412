@@ -12,10 +12,12 @@ module Boards::Ships
     board_column.unoccupied!
   end
 
-  def place_ships!(ship, coords)
+  def place_ships!(ship_type, coords)
     coords.each do |coord|
       column, row = set_point(coord)
-      add_ship_placement!(column, row, ship)
+      raise Games::Boards::Ships::InvalidPlacement unless column && row
+
+      add_ship_placement!(column, row, ship_type)
     end
   end
 
@@ -25,17 +27,23 @@ module Boards::Ships
     board_columns.find_by(column: column, row: row)
   end
 
-  def place_ship!(ship, board_column)
-    board_ship = create_board_ship_if_required(ship)
-    set_ship_board_ship(board_ship&.id, board_column, ship&.id)
+  def place_ship!(ship_type, board_column)
+    create_board_ship_if_required(ship_type, board_column)
   end
 
   def remove_ship!(board_column)
     board_column.update_column(:board_ship_id, nil)
   end
 
-  def create_board_ship_if_required(ship)
-    board_ships.find_or_create_by(ship: ship)
+  def create_board_ship_if_required(ship_type, board_column)
+    ship = Ship.find_or_create_by(ship_type: ship_types(ship_type))
+    board_ship = board_ships.find_or_create_by(ship: ship)
+
+    set_ship_board_ship(board_ship&.id, board_column, ship.id)
+  end
+
+  def ship_types(ship_type)
+    Ship.ship_types[ship_type]
   end
 
   def set_ship_board_ship(board_ship_id, board_column, ship_id)
