@@ -1,0 +1,10 @@
+en:
+  api:
+    games:
+      errors:
+        invalid_turn: 'It is not your turn, please allow your opponent to place their next shot first.'
+        game_over: 'This game has finished. If you wish to continue playing, please start another game'
+      boards:
+        ships:
+          errors:
+            invalid_placement: 'You have placed one of your ships incorrectly. Please limit selections to adjacent cells withing the defined board.'

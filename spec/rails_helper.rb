@@ -83,4 +83,13 @@ RSpec.configure do |config|
   def parse_json(body)
     JSON.parse(body, symbolize_names: true)
   end
+
+  def setup_grid
+    ('A'..'J').to_a.each { |letter| Column.find_or_create_by(name: letter) }
+
+    (1..10).to_a.each { |number| Row.find_or_create_by(name: number) }
+
+    Ship.ship_types.keys.each { |ship_type| Ship.find_or_create_by(ship_type: ship_type) }
+  end
+
 end

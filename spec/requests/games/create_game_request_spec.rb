@@ -20,7 +20,7 @@ describe 'Game Creation' do
     allow_any_instance_of(ApplicationController).to receive(:doorkeeper_token).and_return(token_2)
   end
 
-  it 'should allow an authenticated user to create a game with one other user' do
+  it 'should allow an authenticated user to create a games with one other user' do
     post v1_games_url(params: params)
 
     expect(response).to be_successful

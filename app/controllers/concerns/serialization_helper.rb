@@ -13,7 +13,7 @@ module SerializationHelper
     render json: response
   end
 
-  def default_response(status, message, data = nil)
+  def default_response(status, message, data = {})
     {status: status, message: message}.merge(data)
   end
 end
