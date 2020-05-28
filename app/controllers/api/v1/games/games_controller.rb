@@ -8,7 +8,7 @@ module Api
           error = handle_error(game)
           return error_response(error, 404) unless game.save!
 
-          success_response(game: serialized_resource(game, ::Games::GameBlueprint))
+          success_response(game: serialized_resource(game, ::Games::GameBlueprint, user: current_api_user))
         end
 
         private

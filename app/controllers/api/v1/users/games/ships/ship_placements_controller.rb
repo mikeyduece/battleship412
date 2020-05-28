@@ -7,7 +7,7 @@ module Api
 
             def create
               Api::V1::Games::Ships::Create.call(current_api_user, @game, ship_params) do |success, failure|
-                success.call { |resource| success_response(game: serialized_resource(resource, ::Games::GameBlueprint)) }
+                success.call { |resource| success_response(game: serialized_resource(resource, ::Games::GameBlueprint, user: current_api_user)) }
                 failure.call(&method(:error_response))
               end
             end
