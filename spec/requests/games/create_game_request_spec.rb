@@ -21,7 +21,7 @@ describe 'Game Creation' do
   end
 
   it 'should allow an authenticated user to create a games with one other user' do
-    post v1_games_url(params: params)
+    post api_v1_games_url(params: params)
 
     expect(response).to be_successful
 

@@ -18,7 +18,7 @@ describe 'User Authentication' do
   it 'should create user through the API' do
     expect(User.count).to eq(0)
 
-    post v1_users_url(params: params)
+    post api_v1_users_url(params: params)
 
     expect(response).to be_successful
 
