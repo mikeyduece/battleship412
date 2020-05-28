@@ -49,7 +49,7 @@ describe 'Game Play API' do
       expect(response).to be_successful
 
       game_data = parse_json(response.body)
-      require 'pry'; binding.pry
+
       expect(game_data[:status]).to eq(404)
       expect(game_data[:message]).to eq('You have placed one of your ships incorrectly. Please limit selections to adjacent cells withing the defined board.')
     end
@@ -73,6 +73,7 @@ describe 'Game Play API' do
       expect(response).to be_successful
 
       game_data = parse_json(response.body)
+
       game_data.extend(Hashie::Extensions::DeepLocate)
       ships = game_data.deep_locate -> (key, value, _obj) { key.eql?(:ship) && !value.nil? }
       boards = game_data[:game][:boards].select { |b| b[:board_type].eql?('ships') }.select { |c| c[:player][:id].eql?(user_1.id) }
