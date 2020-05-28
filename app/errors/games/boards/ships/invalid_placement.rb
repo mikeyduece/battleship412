@@ -3,7 +3,7 @@ module Games
     module Ships
       class InvalidPlacement < ::Base
         def code
-          super
+          404
         end
 
         def message

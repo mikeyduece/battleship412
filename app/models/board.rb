@@ -13,14 +13,7 @@ class Board < ApplicationRecord
 
   enum board_type: %i[ships shots]
 
-  def sunken_ships
-    Ship.all.each_with_object({}) do |ship, acc|
-      acc[ship.ship_type] = board_columns.sunk?(ship.id)
-    end
-  end
-
   private
-
 
   def ensure_grid
     Column.find_each do |c|
