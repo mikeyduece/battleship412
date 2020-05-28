@@ -5,7 +5,7 @@ module Api
         class Create < BaseGameService
 
           def call(&block)
-            game.in_progress!
+            game.in_progress! unless game.in_progress? || game.done?
             place_ships
             yield(Success.new(game), NoTrigger)
 
@@ -19,6 +19,8 @@ module Api
 
           def place_ships
             params.each do |ship, coords|
+              raise ::Games::Boards::Ships::InvalidPlacement if coords.empty?
+
               ship_board.place_ships!(ship, coords)
             end
           end
