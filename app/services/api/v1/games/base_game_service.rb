@@ -16,6 +16,11 @@ module Api
 
         private
 
+        def player
+          player = game.turn
+          game.send(player)
+        end
+
         def ships
           params[:ships]
         end
@@ -30,6 +35,14 @@ module Api
 
         def game_boards(board_type)
           game.boards.send(board_type).find_by(player: user)
+        end
+
+        def all_opposing_ships_sunk?
+          all_ships.all? { |ship| opponent_ship_board.board_columns.sunk?(ship.id) }
+        end
+
+        def all_ships
+          Ship.all
         end
 
       end
