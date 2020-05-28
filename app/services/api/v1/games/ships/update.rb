@@ -5,9 +5,13 @@ module Api
         class Update < BaseGameService
 
           def call(&block)
+            check_for_winner
+            check_for_player_turn
             log_shot!
             yield(Success.new(game), NoTrigger)
 
+          rescue ::Games::InvalidTurnError => e
+            yield(NoTrigger, Failure.new(e.code, e.message))
           rescue ::Games::Boards::Ships::InvalidPlacement => e
             yield(NoTrigger, Failure.new(e.code, e.message))
           rescue StandardError => e
@@ -18,7 +22,6 @@ module Api
 
           def log_shot!
             opponent_cell, own_cell = shoot!
-
             if opponent_cell.occupied?
               opponent_cell.hit!
               own_cell.hit!
@@ -43,6 +46,16 @@ module Api
 
           def opponent_ship_board
             game.boards.ships.where.not(player: user).first
+          end
+
+          def check_for_player_turn
+            player = game.turn
+            raise ::Games::InvalidTurnError unless game.send(player).eql?(user)
+            nil
+          end
+
+          def check_for_winner
+
           end
 
         end

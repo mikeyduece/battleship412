@@ -11,8 +11,6 @@ class Ship < ApplicationRecord
     when :submarine then 3
     when :battleship then 4
     when :carrier then 5
-    else
-      0
     end
   end
 end

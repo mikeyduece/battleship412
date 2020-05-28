@@ -1,6 +1,8 @@
 en:
   api:
     games:
+      errors:
+        invalid_turn: 'It is not your turn, please allow your opponent to place their next shot first.'
       boards:
         ships:
           errors:
